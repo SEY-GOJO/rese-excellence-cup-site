@@ -186,7 +186,7 @@
 
 .result-poster-dialog {
   display: grid;
-  width: min(100%, 520px);
+  width: min(100%, 850px);
   max-height: 94vh;
   overflow-y: auto;
   gap: 12px;
@@ -212,7 +212,7 @@
 
 #result-canvas {
   display: block;
-  width: min(100%, 340px);
+  width: min(100%, 790px);
   height: auto;
   justify-self: center;
   border-radius: 8px;
@@ -291,6 +291,10 @@
   font-size: 10px;
   line-height: 1.65;
 }
+
+#shared-sync-status[data-state="online"] { color: #176b4b; }
+#shared-sync-status[data-state="pending"] { color: #805e14; }
+#shared-sync-status[data-state="offline"] { color: #a33b35; }
 
 .organizer-layout {
   display: grid;

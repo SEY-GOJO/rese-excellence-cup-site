@@ -79,6 +79,7 @@
   function persistMatches() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(matches));
+      window.RESE_SHARED_STORE?.publish();
       return true;
     } catch (error) {
       console.error("Impossible d'écrire dans le stockage :", error);
@@ -203,6 +204,7 @@
 
             return `
               <article class="match-card ${live ? `live-match ${match.id === freshResultId ? "live-score-update" : ""}` : played ? match.id === freshResultId ? "recent-result" : "" : "upcoming-card"} ${freshGoalId === match.id ? "goal-score-card" : ""}">
+                ${played && match.id === freshResultId ? `<div class="final-score-banner"><span>FINAL SCORE</span><strong>${match.sport === "football" ? "FOOTBALL" : "BASKETBALL"}</strong></div>` : ""}
                 <div class="team">
                   <span class="team-crest">${escapeHTML(crest(match.home))}</span>
                   <span class="team-name">${escapeHTML(match.home)}</span>
@@ -534,4 +536,5 @@
   window.RESE_NOTIFICATIONS?.notifyUpcoming(matches);
   window.setInterval(() => window.RESE_NOTIFICATIONS?.notifyUpcoming(matches), 30_000);
   renderAll();
+  window.RESE_SHARED_STORE?.start();
 })();

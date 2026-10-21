@@ -41,6 +41,7 @@
   function persistDraws() {
     try {
       localStorage.setItem(DRAWS_STORAGE_KEY, JSON.stringify(draws));
+      window.RESE_SHARED_STORE?.publish();
       return true;
     } catch (error) {
       console.error("Impossible d'enregistrer les tirages :", error);
@@ -95,6 +96,7 @@
   function persistMatches() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(matches));
+      window.RESE_SHARED_STORE?.publish();
       return true;
     } catch (error) {
       console.error("Impossible d'enregistrer les matchs :", error);
@@ -943,4 +945,5 @@
   renderOrganizerBracket();
   window.RESE_NOTIFICATIONS?.notifyUpcoming(matches);
   window.setInterval(() => window.RESE_NOTIFICATIONS?.notifyUpcoming(matches), 30_000);
+  window.RESE_SHARED_STORE?.start();
 })();

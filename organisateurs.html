@@ -17,6 +17,7 @@ les<!doctype html>
     <script src="matches-data.js" defer></script>
     <script src="bracket.js" defer></script>
     <script src="notifications.js" defer></script>
+    <script src="shared-store.js" defer></script>
     <script src="affiche.js" defer></script>
     <script src="organisateurs.js" defer></script>
   </head>
@@ -43,8 +44,8 @@ les<!doctype html>
       </section>
 
       <section class="organizer-notice">
-        <strong>Important — données locales</strong>
-        <span>Cette version conserve les resultats sur cet appareil uniquement. L installation et les notifications sur telephone necessitent une adresse HTTPS. Pour partager les resultats avec les supporters, une base en ligne est necessaire.</span>
+        <strong>Synchronisation partagée</strong>
+        <span id="shared-sync-status" role="status" aria-live="polite">La synchronisation partagée démarre…</span>
       </section>
 
       <section class="organizer-layout">
@@ -180,7 +181,7 @@ les<!doctype html>
             </div>
             <button class="modal-close" type="button" id="poster-close" aria-label="Fermer">×</button>
           </div>
-          <canvas id="result-canvas" width="1080" height="1350" aria-label="Affiche du résultat du match"></canvas>
+          <canvas id="result-canvas" width="1920" height="1080" aria-label="Affiche animée du résultat final du match"></canvas>
           <p id="poster-status" class="poster-status" aria-live="polite">Création de l’animation…</p>
           <div class="poster-actions">
             <button class="button button-dark" id="download-video" type="button" disabled>⬇ Télécharger la vidéo</button>

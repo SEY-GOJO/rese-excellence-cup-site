@@ -1,4 +1,4 @@
-const CACHE_NAME = "rese-excellence-cup-shell-v1";
+const CACHE_NAME = "rese-excellence-cup-shell-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -11,6 +11,7 @@ const APP_SHELL = [
   "./organisateurs.js",
   "./affiche.js",
   "./notifications.js",
+  "./shared-store.js",
   "./manifest.webmanifest",
   "./logo-rese.jpg",
   "./app-icon-192.png",
