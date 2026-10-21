@@ -1,0 +1,211 @@
+les<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#103c70" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="app-icon-192.png" />
+    <title>Gestion organisateurs — RES.E Excellence Cup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="organisateurs.css" />
+    <script src="matches-data.js" defer></script>
+    <script src="bracket.js" defer></script>
+    <script src="notifications.js" defer></script>
+    <script src="affiche.js" defer></script>
+    <script src="organisateurs.js" defer></script>
+  </head>
+  <body class="organizer-page">
+    <header class="organizer-header">
+      <a class="brand" href="index.html">
+        <span class="organizer-mark"><img src="logo-rese.jpg" alt="Logo RES.E" /></span>
+        <span class="brand-copy">
+          <strong>RES.E <span>EXCELLENCE CUP</span></strong>
+          <small>APPLICATION ORGANISATEUR</small>
+        </span>
+      </a>
+      <div class="organizer-header-actions">
+        <button class="notification-toggle install-app-toggle" id="install-app" type="button" aria-label="Installer l application" hidden>Installer</button>
+        <a class="public-link" href="index.html">Voir le site public &rarr;</a>
+      </div>
+    </header>
+
+    <main class="organizer-main">
+      <section class="organizer-intro">
+        <div class="eyebrow dark-eyebrow">OUTIL DE GESTION · ENI-ABT</div>
+        <h1>Gestion de la compétition</h1>
+        <p>Programmez chaque affiche depuis le tirage officiel, choisissez sa date, puis pilotez le score, le chronomètre et les actions en direct.</p>
+      </section>
+
+      <section class="organizer-notice">
+        <strong>Important — données locales</strong>
+        <span>Cette version conserve les resultats sur cet appareil uniquement. L installation et les notifications sur telephone necessitent une adresse HTTPS. Pour partager les resultats avec les supporters, une base en ligne est necessaire.</span>
+      </section>
+
+      <section class="organizer-layout">
+        <article class="organizer-card match-editor">
+          <div class="organizer-card-heading">
+            <div>
+              <div class="eyebrow dark-eyebrow">SAISIE RAPIDE</div>
+              <h2 id="form-title">Programmer un match</h2>
+            </div>
+            <span class="editor-icon">＋</span>
+          </div>
+          <form id="match-form">
+            <input type="hidden" id="match-id" />
+            <div class="editor-grid">
+              <label>Discipline
+                <select id="form-sport" required>
+                  <option value="football">Football inter-classes</option>
+                  <option value="basketball">Basketball inter-promotions</option>
+                </select>
+              </label>
+              <label class="editor-full" id="fixture-picker-wrap">Affiche issue du tirage officiel
+                <select id="form-fixture" required><option value="">Publiez d’abord le tirage officiel</option></select>
+              </label>
+              <label>Statut du match
+                <select id="form-status" required>
+                  <option value="upcoming">À venir</option>
+                  <option value="live">En direct</option>
+                  <option value="played">Terminé</option>
+                </select>
+              </label>
+              <label>Équipe A<input id="form-home" required maxlength="40" placeholder="Choisissez une affiche officielle" readonly /></label>
+              <label>Équipe B<input id="form-away" required maxlength="40" placeholder="Choisissez une affiche officielle" readonly /></label>
+              <label>Date et heure<input id="form-date" type="datetime-local" required /></label>
+              <label>Lieu<input id="form-venue" maxlength="80" placeholder="Terrain de l'ENI-ABT" /></label>
+              <label>Score équipe A<input id="form-home-score" type="number" min="0" max="999" disabled /></label>
+              <label>Score équipe B<input id="form-away-score" type="number" min="0" max="999" disabled /></label>
+              <label class="editor-full">En cas d’égalité à la fin
+                <select id="form-tiebreak-winner"><option value="">Choisir le vainqueur aux tirs au but</option><option value="home">Équipe A</option><option value="away">Équipe B</option></select>
+              </label>
+              <label class="editor-full">Joueur ou joueuse à l'honneur
+                <input id="form-star" maxlength="80" placeholder="Nom — équipe — performance (ex. 2 buts)" />
+              </label>
+              <label class="editor-full roster-field" id="home-roster-label">Joueurs équipe A
+                <textarea id="home-roster" rows="4" placeholder="Un nom par ligne&#10;Ex. Amadou Diallo"></textarea>
+              </label>
+              <label class="editor-full roster-field" id="away-roster-label">Joueurs équipe B
+                <textarea id="away-roster" rows="4" placeholder="Un nom par ligne&#10;Ex. Mariam Koné"></textarea>
+              </label>
+              <div class="editor-full live-event-editor">
+                <strong>Action de match</strong>
+                <div class="live-event-fields">
+                  <input id="event-minute" type="number" min="0" max="130" placeholder="Minute" aria-label="Minute de l’action" />
+                  <select id="event-type" aria-label="Type d’action"><option value="goal">But</option><option value="save">Arrêt du gardien</option><option value="yellow">Carton jaune</option><option value="red">Carton rouge</option><option value="substitution">Remplacement</option></select>
+                  <select id="event-team" aria-label="Équipe concernée"><option value="home">Équipe A</option><option value="away">Équipe B</option></select>
+                  <input id="event-player" maxlength="70" list="event-player-options" placeholder="Choisir ou saisir un joueur" aria-label="Joueur concerné" />
+                  <datalist id="event-player-options"></datalist>
+                  <button class="button button-outline" type="button" id="add-match-event">Ajouter l’action</button>
+                </div>
+                <div class="goalkeeper-fields">
+                  <label>Arrêts gardien A<input id="home-saves" type="number" min="0" max="99" value="0" /></label>
+                  <label>Arrêts gardien B<input id="away-saves" type="number" min="0" max="99" value="0" /></label>
+                </div>
+                <ol id="match-event-list" class="match-event-editor-list"></ol>
+                <small>Chaque but ajouté actualise le score. Enregistrez pour publier les actions sur le site public.</small>
+              </div>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+            <div class="editor-actions">
+              <button class="button button-lime" type="submit" id="save-match">Enregistrer le match</button>
+              <button class="button button-outline" type="button" id="cancel-edit" hidden>Annuler</button>
+            </div>
+            <div id="match-clock-controls" class="match-clock-controls" hidden>
+              <div class="clock-face"><span id="clock-period">PRÊT</span><strong id="clock-display">45:00</strong></div>
+              <div class="clock-actions">
+                <button class="button button-dark" type="button" id="clock-start">Démarrer le match</button>
+                <button class="button button-outline" type="button" id="clock-halftime">Mi-temps</button>
+                <button class="button button-outline" type="button" id="clock-second-half">Démarrer la 2e mi-temps</button>
+                <button class="button button-outline" type="button" id="clock-add-time">+1 min additionnelle</button>
+                <button class="button button-outline" type="button" id="clock-extra-time">Prolongation</button>
+                <button class="button button-outline" type="button" id="clock-extra-break">Pause prolongation</button>
+                <button class="button button-outline" type="button" id="clock-extra-second">2e prolongation</button>
+                <button class="button button-outline" type="button" id="clock-penalties">Tirs au but</button>
+                <button class="button button-lime" type="button" id="clock-finish">Terminer et qualifier le vainqueur</button>
+              </div>
+            </div>
+          </form>
+        </article>
+
+        <aside class="organizer-card transfer-card">
+          <div class="eyebrow dark-eyebrow">SAUVEGARDE</div>
+          <h2>Vos données</h2>
+          <p>Gardez une copie de vos résultats ou restaurez une sauvegarde précédente.</p>
+          <button class="button button-dark" type="button" id="export-data">Exporter les résultats</button>
+          <label class="button button-outline import-button">Importer une sauvegarde<input id="import-data" type="file" accept="application/json,.json" /></label>
+          <button class="button button-outline reset-tournament-button" type="button" id="reset-tournament-data">Réinitialiser matchs et équipes</button>
+          <span class="transfer-hint">La réinitialisation vide aussi les matchs et le tableau affichés sur la page publique.</span>
+          <span class="transfer-hint">Format JSON · sauvegarde des matchs</span>
+        </aside>
+      </section>
+
+      <section class="organizer-card draw-card">
+        <div class="organizer-card-heading">
+          <div>
+            <div class="eyebrow dark-eyebrow">TABLEAU OFFICIEL · FOOTBALL</div>
+            <h2>Les 16 équipes, jusqu’à la finale</h2>
+          </div>
+          <span class="editor-icon">🏆</span>
+        </div>
+        <p class="draw-intro">Saisissez les équipes selon le tirage officiel. Les affiches peuvent ensuite être programmées dans n’importe quel ordre ; les vainqueurs seront reportés automatiquement dans le tour suivant après validation du résultat final.</p>
+        <div class="draw-tools">
+          <span class="draw-stage-hint">8 matchs → 4 quarts de finale → 2 demi-finales → grande finale</span>
+          <button class="button button-outline" id="edit-draw-teams" type="button">Modifier les 16 équipes</button>
+        </div>
+        <div id="draw-entry" class="draw-entry" hidden>
+          <p class="draw-entry-note">Saisissez les équipes dans l’ordre exact du tirage officiel. Les équipes 1 et 2 joueront le premier match, 3 et 4 le deuxième, et ainsi de suite.</p>
+          <div id="draw-teams-grid" class="draw-teams-grid"></div>
+          <p class="form-error" id="draw-error" role="alert" hidden></p>
+          <div class="editor-actions">
+            <button class="button button-outline" id="clear-draw-selection" type="button">Effacer la sélection</button>
+            <button class="button button-dark" id="save-draw" type="button">Publier les affiches officielles</button>
+            <button class="button button-outline" id="cancel-draw-edit" type="button">Annuler</button>
+          </div>
+        </div>
+        <div id="organizer-bracket" class="public-bracket"></div>
+      </section>
+
+      <section class="result-poster-modal" id="result-poster-modal" hidden aria-labelledby="poster-title">
+        <div class="result-poster-dialog">
+          <div class="poster-modal-head">
+            <div>
+              <div class="eyebrow dark-eyebrow">ANNONCE DE RÉSULTAT</div>
+              <h2 id="poster-title">Le score final est connu !</h2>
+            </div>
+            <button class="modal-close" type="button" id="poster-close" aria-label="Fermer">×</button>
+          </div>
+          <canvas id="result-canvas" width="1080" height="1350" aria-label="Affiche du résultat du match"></canvas>
+          <p id="poster-status" class="poster-status" aria-live="polite">Création de l’animation…</p>
+          <div class="poster-actions">
+            <button class="button button-dark" id="download-video" type="button" disabled>⬇ Télécharger la vidéo</button>
+            <button class="button button-outline" id="download-image" type="button">⬇ Télécharger l’affiche PNG</button>
+            <button class="button button-outline" id="replay-video" type="button">↻ Recréer la vidéo</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="organizer-card saved-matches">
+        <div class="organizer-card-heading">
+          <div>
+            <div class="eyebrow dark-eyebrow">CALENDRIER & SCORES</div>
+            <h2>Matchs enregistrés <span id="match-count"></span></h2>
+          </div>
+          <div class="filter-tabs" role="group" aria-label="Filtrer les matchs">
+            <button class="filter-tab active" type="button" data-filter="all">Tous</button>
+            <button class="filter-tab" type="button" data-filter="football">Football</button>
+            <button class="filter-tab" type="button" data-filter="basketball">Basket</button>
+          </div>
+        </div>
+        <div id="admin-match-list" class="organizer-match-list"></div>
+      </section>
+      <footer class="organizer-footer"><a href="index.html">← Retour au site public</a><span>RES.E · Ensemble cultivons l'excellence ★ · ENI-ABT</span></footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
